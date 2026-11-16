@@ -49,10 +49,13 @@ file when a new pattern is established, or when something below is superseded.
   serverless, not project YAML config.
 
 ## BigQuery specifics
-- `macros/generate_schema_name.sql` / `generate_database_name.sql`: only the `dev`/`prod` targets
-  use the custom schema name as-is; any other target gets the default schema prefixed
-  (`{default}_{custom}`), keeping ad hoc/sandbox targets isolated. Database name is only
-  overridden when the target name contains `"prod"`.
+- `macros/generate_schema_name.sql` / `generate_database_name.sql`: only the `prod` target
+  uses the custom schema name as-is (`public`, `snapshots`); every other target (`dev`,
+  `cloud`, ad hoc) gets its own dataset prefixed (`{default}_{custom}`, e.g. `dbt_dev_public`),
+  so non-prod runs never touch prod tables. Database name is only overridden when the target
+  name contains `"prod"` and a custom database is set.
+- Targets: `dev` (default, dataset `dbt_dev`), `prod` (dataset `public`, run with
+  `--target prod`), `cloud` (Claude Code cloud sessions, dataset `dbt_claude`).
 - `dispatch` block in `dbt_project.yml` puts the `public` macro namespace before `dbt` so the
   custom `generate_schema_name` macro is the one dbt actually calls.
 - BigQuery IAM grants are configured directly in `schema.yml` under a model's `config.grants`
