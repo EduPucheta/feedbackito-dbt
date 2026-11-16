@@ -4,6 +4,14 @@ This is the dbt analytics layer for **[Feedbackito](https://feedbackito.com)** (
 
 It's a real personal project, not a throwaway sandbox — and it also doubles as hands-on practice for the **dbt Developer Certification**.
 
+### Claude Code cloud sessions
+
+`.claude/settings.json` runs [`scripts/cloud_session_setup.sh`](scripts/cloud_session_setup.sh) on session start (a no-op locally). In the cloud it installs dbt Core + dbt-bigquery from `requirements.txt`, writes a `cloud` profile, and runs `dbt deps`. Cloud builds land in `dbt_claude_public`, never in prod `public`.
+
+Cloud environment settings (claude.ai/code → environment selector):
+- **Network:** Limited, package managers allowed, plus `hub.getdbt.com`
+- **Environment variables:** `GCP_SA_KEY_B64=<base64 of the service-account JSON>`. These are visible to anyone using the environment, so use a dedicated least-privilege service account.
+
 ### Using the starter project
 
 Try running the following commands:

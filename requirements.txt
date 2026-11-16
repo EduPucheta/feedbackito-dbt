@@ -1,0 +1,5 @@
+# dbt toolchain for Claude Code cloud sessions (installed by scripts/cloud_session_setup.sh).
+# Locally this project runs on the dbt Fusion engine; the cloud uses dbt Core, which
+# needs no extra network allowlist entries.
+dbt-core~=1.11.0
+dbt-bigquery~=1.11.0
