@@ -7,8 +7,8 @@
 # Optional:
 #   DBT_CLOUD_DATASET  base dataset for cloud builds (default: dbt_claude)
 #
-# Models build into "<DBT_CLOUD_DATASET>_public" (target "cloud" is not dev/prod, so
-# generate_schema_name prefixes the schema), never into the prod "public" dataset.
+# Everything builds into the single <DBT_CLOUD_DATASET> dataset (target "cloud" is not
+# prod, so generate_schema_name ignores folder datasets), never into prod datasets.
 set -euo pipefail
 
 [ "${CLAUDE_CODE_REMOTE:-}" != "true" ] && exit 0
@@ -68,4 +68,4 @@ fi
 # dbt Core re-resolves the Fusion-written lockfile; keep the committed one so the tree stays clean
 git -C "$PROJECT_DIR" checkout -- package-lock.yml 2>/dev/null || true
 
-echo "dbt ready: target=cloud, models build into ${DATASET}_public"
+echo "dbt ready: target=cloud, everything builds into ${DATASET}"
