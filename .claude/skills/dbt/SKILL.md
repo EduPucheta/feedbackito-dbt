@@ -50,11 +50,11 @@ file when a new pattern is established, or when something below is superseded.
 
 ## BigQuery specifics
 - `macros/generate_schema_name.sql` / `generate_database_name.sql`: only the `prod` target
-  uses the custom schema name as-is (`public`, `snapshots`); every other target (`dev`,
-  `cloud`, ad hoc) gets its own dataset prefixed (`{default}_{custom}`, e.g. `dbt_dev_public`),
-  so non-prod runs never touch prod tables. Database name is only overridden when the target
+  uses the custom schema as-is (`staging`, `marts`, `snapshots`, set via `+schema` in
+  `dbt_project.yml`); every other target (`dev`, `cloud`, dbt Cloud IDE/CI) builds everything
+  into its own single dataset (e.g. `dbt_dev`), so non-prod runs never touch prod tables. Database name is only overridden when the target
   name contains `"prod"` and a custom database is set.
-- Targets: `dev` (default, dataset `dbt_dev`), `prod` (dataset `public`, run with
+- Targets: `dev` (default, dataset `dbt_dev`), `prod` (dataset `marts`; the dbt Cloud job, run locally with
   `--target prod`), `cloud` (Claude Code cloud sessions, dataset `dbt_claude`).
 - `dispatch` block in `dbt_project.yml` puts the `public` macro namespace before `dbt` so the
   custom `generate_schema_name` macro is the one dbt actually calls.

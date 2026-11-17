@@ -41,8 +41,15 @@ dispatch:
 
 models:
   jaffle_shop:
+    # Datasets apply on the prod target only; dev/cloud/CI put everything in the
+    # target's own dataset (see macros/generate_schema_name.sql).
     staging:
       +materialized: view
+      +schema: staging
     marts:
       +materialized: table
-    +schema: public  # Replace with your actual dataset 
+      +schema: marts
+
+seeds:
+  jaffle_shop:
+    +schema: staging
